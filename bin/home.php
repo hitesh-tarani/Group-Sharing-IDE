@@ -4,9 +4,9 @@ $conn_error ='could not connect.';
 
 $mysql_host ='localhost';
 $mysql_user ='root';
-$mysql_pass ='';
+$mysql_pass ='hitesh_1995';
 
-$mysql_db ='IDE';
+$mysql_db ='ide';
 
 
 if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) || !mysqli_select_db($con,$mysql_db)){
@@ -36,7 +36,7 @@ if(isset($_POST['loginid'])){
 		$query_num_rows3= mysqli_num_rows($query_run3);
 		
 		if($query_num_rows3>=1){
-			header("Location: ../test_ide/ace1.php"); /* Redirect browser */
+			header("Location: ../ace1.php"); /* Redirect browser */
 		}
         else{header("Location: mbox/passwordinvalid.php");}
 
@@ -64,6 +64,11 @@ if(isset($_POST['loginid1'])){
         if (!mkdir($structure, 0777, true)) {
         die('Failed to create folders...');
         }
+        chdir('./user_files/'.$loginid1);
+        $curr_time=time();
+        file_put_contents('timestamp.txt', $curr_time);
+        chdir('.../');
+        echo(getcwd());
 		header("Location:mbox/registersuccess.php");
 	}
 	else{

@@ -1,10 +1,14 @@
 <?php
-
+session_start();
+$loginid = $_SESSION["loginid"];
+chdir('./bin/user_files/'.$loginid);
+$currentdirectory=getcwd();
+exec('sudo chmod -R 0777 '.$currentdirectory);
 $filename  = dirname(__FILE__).'/temp.cpp';
 $filename1  = dirname(__FILE__).'/data.txt';
 $outfile  = dirname(__FILE__).'/output.txt';
-$timestamp = dirname(__FILE__).'/timestamp.txt';
-//echo $timestamp;
+//$timestamp = dirname(__FILE__).'/timestamp.txt';
+$timestamp='timestamp.txt';
 //file_put_contents($filename,1);
 
 // store new message in the file
@@ -26,7 +30,7 @@ if ($msg != '')
 	            $lang_file=$fname.".".$lang;
 	         else
 	         	$lang_file=$fname.".py";*/
-			shell_exec("sed -i '".$line[2]."s/.*/".$line[3]."/' ".$fname);
+			exec("sed -i '".$line[2]."s/.*/".$line[3]."/' ".$fname);
             file_put_contents($timestamp,time());
             //$response['timestamp'] = time();
 			//$x="sed -i '".$line[0]."s/.*/".$line[1]."/' ".$filename;
@@ -42,7 +46,6 @@ if ($msg != '')
             file_put_contents($outfile,"");
             break;
       case 'L': //load file
-      			echo time()." ".$timestamp;
             file_put_contents($timestamp,time());
             file_put_contents($outfile,"");
             break;
@@ -55,8 +58,8 @@ if ($msg != '')
 	        else
 	         	$lang_file=$fname.".py";*/
             $code=$text[2];
-            file_put_contents($lang_file,$code);
-			shell_exec("bash ".$lang."_run ".$lang_file);
+            file_put_contents($fname,$code);
+			exec("bash ".$lang."_run ".$fname);
             file_put_contents($timestamp,time());
             //file_put_contents($outfile,$x);
             break;
@@ -69,7 +72,10 @@ if ($msg != '')
 	            $filenamefinal=$text[1].".py";
             
             $code=$text[2];
+            
             file_put_contents($filenamefinal,$code);
+            
+            file_put_contents($timestamp,time());
             //file_put_contents($outfile,$x);
             break;
 		default:
