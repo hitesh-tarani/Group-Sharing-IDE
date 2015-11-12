@@ -2,7 +2,7 @@
 session_start();
 $loginid = $_SESSION["loginid"];
 
-$_SESSION["loginid"] = $loginid;
+//$_SESSION["loginid"] = $loginid;
 if($loginid=='')
 {
   	header("Location:mbox/sessionexpired.php");
