@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ACE Autocompletion demo</title>
+  <style type="text/css" >
+    
+    
+    #editor { 
+        margin: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="editor">
+		#include iostream
+        int str() {
+            char* x = "All this is syntax highlighted";
+            return x;
+        }
+    
+    class abcd{
+      in
+    };
+    
+    int main()
+    {
+        
+        return 0;
+    }
+    </div>
+
+<!-- load ace -->
+<!--script src="../build/src-noconflict/ace.js"></script>
+<!-- load ace language tools -->
+<script src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js"></script>
+<script>
+    // trigger extension
+    ace.require("ace/ext/language_tools");
+    var editor = ace.edit("editor");
+    editor.session.setMode("ace/mode/c_cpp");
+    editor.setTheme("ace/theme/monokai");
+    // enable autocompletion and snippets
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+</script>
+
+<script src="./show_own_source.js"></script>
+</body>
+</html>

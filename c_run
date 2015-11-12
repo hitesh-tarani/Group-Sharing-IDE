@@ -1,0 +1,2 @@
+gcc temp.c
+./a.out > output.txt
