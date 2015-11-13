@@ -11,7 +11,7 @@ $outfile  = 'output.txt';
 //$timestamp = dirname(__FILE__).'/timestamp.txt';
 $timestamp='timestamp.txt';
 //file_put_contents($filename,1);
-
+$back_dir=dirname(__FILE__);
 // store new message in the file
 $response = array();
 
@@ -60,10 +60,10 @@ if ($msg != '')
 	         	$lang_file=$fname.".py";*/
             $code=$text[2];
             file_put_contents($fname,$code);
-			$x=exec('compile.bat');
-            
+            shell_exec("bash ".$back_dir."/".$lang."_run ".$fname);
+            //echo "this is ".$x." code";
             file_put_contents($timestamp,time());
-            file_put_contents('output.txt',$x);
+            //file_put_contents('output.txt',$x);
             break;
 		case 'Savecode':
             $text=split(" ",$content,3);

@@ -1,1 +1,8 @@
-E cpp temp.cpp.cpp 1 #include <iostream>
+Run cpp temp.cpp #include <iostream>
+using namespace std;
+
+int main(){
+    //Write your code here
+    cout<<"Hello";
+    return 0;
+}
