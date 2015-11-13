@@ -1,8 +1,8 @@
-Run cpp temp.cpp #include <iostream>
+Savecode cpp temp1 #include <iostream>
 using namespace std;
 
 int main(){
     //Write your code here
-    cout<<"Hello";
+    cout<<1+3;
     return 0;
 }
