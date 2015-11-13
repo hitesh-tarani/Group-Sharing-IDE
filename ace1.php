@@ -323,6 +323,7 @@ $("#Save").click(function(){
 		var code=editor.getValue();
 
 		var final_code=lang+" "+file+" "+code;
+        fname=file;
     	console.log(final_code);
 		comet.doRequest("Savecode",final_code);
 	}
