@@ -67,6 +67,8 @@ if(isset($_POST['loginid1'])){
         chdir('./user_files/'.$loginid1);
         $curr_time=time();
         file_put_contents('timestamp.txt', $curr_time);
+        file_put_contents('output.txt', "");
+        file_put_contents('data.txt',"");
         chdir('.../');
         echo(getcwd());
 		header("Location:mbox/registersuccess.php");

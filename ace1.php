@@ -300,7 +300,7 @@ comet.connect();
 				lang="c";
 		}
 	var code=editor.getValue();
-    var final_code=lang+" "+fname+" "+code;
+    var final_code=lang+" "+fname+"."+text_lang_ext+" "+code;
     console.log(final_code);
 	comet.doRequest("Run",final_code);
 }

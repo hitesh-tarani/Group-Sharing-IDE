@@ -1,4 +1,4 @@
-Run cpp temp1.cpp.cpp #include <iostream>
+#include <iostream>
 using namespace std;
 
 int main(){
