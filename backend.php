@@ -1,12 +1,13 @@
 <?php
-session_start();
-$loginid = $_SESSION["loginid"];
+// session_start();
+// $loginid = $_SESSION["loginid"];
+$loginid=$_GET['login'];
 chdir('./bin/user_files/'.$loginid);
 $currentdirectory=getcwd();
-exec('sudo chmod -R 0777 '.$currentdirectory);
-$filename  = dirname(__FILE__).'/temp.cpp';
-$filename1  = dirname(__FILE__).'/data.txt';
-$outfile  = dirname(__FILE__).'/output.txt';
+//shell_exec('sudo chmod -R 0777 '.$currentdirectory);
+$filename  = 'temp.cpp';
+$filename1  = 'data.txt';
+$outfile  = 'output.txt';
 //$timestamp = dirname(__FILE__).'/timestamp.txt';
 $timestamp='timestamp.txt';
 //file_put_contents($filename,1);
@@ -30,7 +31,7 @@ if ($msg != '')
 	            $lang_file=$fname.".".$lang;
 	         else
 	         	$lang_file=$fname.".py";*/
-			exec("sed -i '".$line[2]."s/.*/".$line[3]."/' ".$fname);
+			shell_exec("sed -i '".$line[2]."s/.*/".$line[3]."/' ".$fname);
             file_put_contents($timestamp,time());
             //$response['timestamp'] = time();
 			//$x="sed -i '".$line[0]."s/.*/".$line[1]."/' ".$filename;
@@ -59,9 +60,10 @@ if ($msg != '')
 	         	$lang_file=$fname.".py";*/
             $code=$text[2];
             file_put_contents($fname,$code);
-			exec("bash ".$lang."_run ".$fname);
+			$x=exec('compile.bat');
+            
             file_put_contents($timestamp,time());
-            //file_put_contents($outfile,$x);
+            file_put_contents('output.txt',$x);
             break;
 		case 'Savecode':
             $text=split(" ",$content,3);

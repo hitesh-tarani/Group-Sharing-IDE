@@ -1,8 +1,6 @@
 <?php
 session_start();
 $loginid = $_SESSION["loginid"];
-
-//$_SESSION["loginid"] = $loginid;
 if($loginid=='')
 {
   	header("Location:mbox/sessionexpired.php");
@@ -120,11 +118,13 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
 "<div id='Load'><button type='button'>Load File</button></div>"+
 "<div><input id='Filename' type='text' placeholder='Enter_File_Name'></div>"+
 "<div id='output'></div>");
+var login = "<?php echo $loginid ?>";
+console.log("Login: "+login);
     </script>
-	<script type="text/javascript">
+	<script>
+	
 	var Comet = Class.create();
 Comet.prototype = {
-
   timestamp: 0,
   url: './backend.php',
   noerror: true,
@@ -135,7 +135,7 @@ Comet.prototype = {
   {
     this.ajax = new Ajax.Request(this.url, {
       method: 'get',
-      parameters: { 'timestamp' : this.timestamp },
+      parameters: { 'login' : login ,'timestamp' : this.timestamp },
       onSuccess: function(transport) {
         // handle the server response
         var response = transport.responseText.evalJSON();
@@ -202,7 +202,7 @@ Comet.prototype = {
   {
     new Ajax.Request(this.url, {
       method: 'get',
-      parameters: { 'msg' : request ,'content': content}
+      parameters: { 'login' : login ,'msg' : request ,'content': content}
     });
   }
 }
