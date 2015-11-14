@@ -3,6 +3,6 @@ using namespace std;
 
 int main(){
     //Write your code here
-    cout<<1+3;
+    cout << "good game, well played" << endl;
     return 0;
 }

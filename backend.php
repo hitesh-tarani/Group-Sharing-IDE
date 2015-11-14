@@ -37,8 +37,8 @@ if ($msg != '')
 {
         $a=$msg." ".$content;
         file_put_contents($filename1,$a);
-switch ($msg) {
-	case 'E': //edit line
+        switch ($msg) {
+	    case 'E': //edit line
 			$line=split(" ", $content,4);
 			$lang=$line[0];
 	            $fname=$line[1];
@@ -46,7 +46,7 @@ switch ($msg) {
 	            $lang_file=$fname.".".$lang;
 	         else
 	         	$lang_file=$fname.".py";*/
-		shell_exec("sed -i '".$line[2]."s/.*/".$line[3]."/' ".$fname);
+		    shell_exec("sed -i '".$line[2]."s/.*/".$line[3]."/' ".$fname);
             	file_put_contents($timestamp,time());
             //$response['timestamp'] = time();
 			//$x="sed -i '".$line[0]."s/.*/".$line[1]."/' ".$filename;
@@ -83,35 +83,35 @@ switch ($msg) {
 	case 'Savecode':
             $text=split(" ",$content,3);
             $lang=$text[0];
-            if($lang!="python")
+            /*if($lang!="python")
 	            $filenamefinal=$text[1].".".$lang;
-         else
-	            $filenamefinal=$text[1].".py";
-            
+            else
+	            $filenamefinal=$text[1].".py";*/
+            $filenamefinal=$text[1];
             $code=$text[2];
-            $query="SELECT Files.File_id FROM Files INNER JOIN Sharing WHERE Files.File_name='$filenamefinal' and Sharing.Login_id='$loginid'"; 
-	    $query_run = mysqli_query($con,$query) ;
-	    $query_num_rows= mysqli_num_rows($query_run);
-		
-	if($query_num_rows==0){
-	    //insert into query
-	    $query2="insert into Files (File_name) values ('$filenamefinal')"; 
-	    $query_run2 = mysqli_query($con,$query2) ;
+            $query="SELECT File_id FROM Files natural join Sharing WHERE Files.File_name='$filenamefinal' and Sharing.Login_id='$loginid'";
+            $query_run = mysqli_query($con,$query) ;
+            $query_num_rows= mysqli_num_rows($query_run);
 
-	    $query3="insert into Sharing values ((select MAX(File_id) from Files),'$loginid')"; 
-	    $query_run3 = mysqli_query($con,$query3) ;
+            if($query_num_rows==0){
+            //insert into query
+    	    $query2="insert into Files (File_name) values ('$filenamefinal')"; 
+            $query_run2 = mysqli_query($con,$query2) ;
 
-	    file_put_contents($filenamefinal,$code);
+            $query3="insert into Sharing values ((select MAX(File_id) from Files),'$loginid')"; 
+            $query_run3 = mysqli_query($con,$query3) ;
+
+            file_put_contents($filenamefinal,$code);
             
-            file_put_contents($timestamp,time());		
-	}
+            file_put_contents($timestamp,time());
+            }
 
-	else
-	{
+            else
+            {
             $prevdir=getcwd();
 	    chdir('./../');
 	    $tempdir=getcwd();
-            $temptime=time();
+        $temptime=time();
 	    while($row=mysqli_fetch_assoc($query_run))
 	    {
             	$tempfileid=$row["File_id"];
@@ -129,10 +129,34 @@ switch ($msg) {
             }
             chdir($prevdir);
     	    //file_put_contents($outfile,$x);
-	}
-            break;
-		default:
-			break;
+        }
+        break;
+
+    case 'Share':
+        $text=split(" ",$content,2);
+        $templogin=$text[0];
+        $tempfile=$text[1];
+        $query="SELECT File_id FROM Files natural join Sharing WHERE Files.File_name='$tempfile' and Sharing.Login_id='$loginid'";
+        $query_run = mysqli_query($con,$query) ;
+        $query_num_rows= mysqli_num_rows($query_run);
+
+        if($query_num_rows>0)
+        {
+            $row=mysqli_fetch_assoc($query_run);
+           	$tempfileid=$row["File_id"];
+            $query4="insert into Sharing values ('$tempfileid','$templogin')";
+            $query_run4 = mysqli_query($con,$query4);
+
+            $code=file_get_contents($tempfile);
+            $prevdir=getcwd();
+	        chdir('../');
+	        $tempdir=getcwd();
+            chdir($templogin);
+            file_put_contents($tempfile,$code);
+            chdir($prevdir);
+        }
+        break;
+    default:break;
 	}
   	
   	die();

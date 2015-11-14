@@ -1,1 +1,1 @@
-pyton temp.py > output.txt
+python $1 > output.txt

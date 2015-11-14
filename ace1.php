@@ -3,7 +3,7 @@ session_start();
 $loginid = $_SESSION["loginid"];
 if($loginid=='')
 {
-  	header("Location:mbox/sessionexpired.php");
+  	header("Location:bin/mbox/sessionexpired.php");
 }
 chdir('./bin/user_files/'.$loginid);
 $time=time();
@@ -12,7 +12,7 @@ $time=time();
 //echo $timestamp;
 
 file_put_contents('timestamp.txt',$time);
-
+file_put_contents('output.txt',"");
 $conn_error ='could not connect.';
 
 $mysql_host ='localhost';
@@ -81,6 +81,14 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
             top: 440px;
             left: 100px;
         }
+        #Share{
+            position:relative;
+            top:420px;
+        }
+        #Share_user{
+            position:relative;
+            top:420px;
+        }
     </style>
 </head>
 <body>
@@ -93,12 +101,6 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
 		var text = {cpp:"#include <iostream>\nusing namespace std;\n\nint main(){\n    //Write your code here\n    \n    return 0;\n}",c:"#include <stdio.h>\n\nint main(void) {\n    //Write your code here\n    \n    return 0;\n}",python:"#Write your Code Here\n",java:"import java.util.*;\nimport java.lang.*;\nimport java.io.*;\n\n/* Name of the class has to be \"Main\" only if the class is public. */\nclass Test\n{\n	public static void main (String[] args) throws java.lang.Exception\n	{\n		// your code goes here\n	}\n}"};
 </script>
 		
-<!--script>
-		var c_plus_plus_text="#include <iostream>\nusing namespace std;\n\nint main(){\n		//Write your code here\n        return 0;\n}";
-		var c_text="#include <stdio.h>\n\nint main(void) {\n	// your code goes here\n	return 0;\n}";
-		var python_text="Write your Code Here"
-		var java_text="import java.util.*;\nimport java.lang.*;\nimport java.io.*;\n\n/* Name of the class has to be \"Main\" only if the class is public. */\nclass Test\n{\n	public static void main (String[] args) throws java.lang.Exception\n	{\n		// your code goes here\n	}\n}";
-</script-->
 
 <div style="width:500px;height:500px">
 	<div id="editor001" class="editor_lang">
@@ -117,6 +119,8 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
 "<div id='Save'><button type='button'>Saveas</button></div>"+
 "<div id='Load'><button type='button'>Load File</button></div>"+
 "<div><input id='Filename' type='text' placeholder='Enter_File_Name'></div>"+
+"<div id='Share'><button type='button'>Share File</button></div>"+
+"<div><input id='Share_user' type='text' placeholder='Enter username to share'></div>"+
 "<div id='output'></div>");
 var login = "<?php echo $loginid ?>";
 console.log("Login: "+login);
@@ -322,7 +326,7 @@ $("#Save").click(function(){
 		var file=$("#Filename").val();
 		var code=editor.getValue();
 
-		var final_code=lang+" "+file+" "+code;
+		var final_code=lang+" "+file+"."+text_lang_ext+" "+code;
         fname=file;
     	console.log(final_code);
 		comet.doRequest("Savecode",final_code);
@@ -331,6 +335,12 @@ $("#Load").click(function(){
         var file=$("#Filename").val();
         comet.doRequest("L",file);
     });
+$("#Share").click(function(){
+        //var file=$("#Filename").val();
+        var user_login=$("#Share_user").val();
+        comet.doRequest("Share",user_login+" "+fname+"."+text_lang_ext);
+    });
+
 
 </script>
 
