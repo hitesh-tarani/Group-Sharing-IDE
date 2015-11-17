@@ -32,8 +32,7 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
-<meta content="utf-8" http-equiv="encoding">
+<meta charset="utf-16">
 <title>Ace autocompletion test</title>
 <style type="text/css" media="screen">
 #editor {
@@ -54,11 +53,11 @@ height:30px;
 color:#635348;
       background-color:#fff;
 }
-.select{
+select{
     box-sizing: border-box;
 cursor: pointer;
 }
-.li{
+li{
 cursor: pointer;
 }
 #Load{
@@ -173,7 +172,7 @@ handleResponse: function(response)
         console.log(data);
         var ind=data.indexOf(' ');
         var lang=data.substr(0,ind);
-        text_lang_ext=lang; 
+        temp_lang_ext=lang; 
         if(lang=="c"||lang=="cpp")
             lang="c_cpp";
         else if(lang=="py")
@@ -189,31 +188,15 @@ handleResponse: function(response)
     }
     else if(response['Edit'])
     {
-        var data=response['Edit'];
-        //console.log(data);
-        var currLine=editor.selection.getCursor();  
-        var lang=data[0];
-        var tempfile=data[1];
-        //console.log(fname+","+tempfile);
-        //console.log(text_lang_ext+","+lang);
-        if(tempfile==fname && text_lang_ext==lang)
-        {
-            var line=data[2];
-            var code=data[3];
-            if(line=="whole")
-            {
-                editor.setValue(code);
-                editor.gotoLine(currLine.row+1,currLine.column,true);
-            }
-            else
-            {
-                var Range = ace.require("ace/range").Range;
-                var range=new Range(line-1, 0, line-1, Number.MAX_VALUE);
-                editor.session.replace(range, code);
-                console.log(range);
-            }
-        }
-        //console.log(response['Edit']);*/
+        var data=reponse['Edit'];
+          var arr=data.split(' ');
+          var Range = require("ace/range").Range;
+          var row = arr[2];
+          var newText = arr[3];
+          var range=new Range(row, 0, row, Number.MAX_VALUE);
+          editor.session.replace(range, newText);
+          console.log(range);
+        console.log(response['Edit']);
     }    
     $('#output').html(response['output']);
 },
@@ -305,8 +288,8 @@ editor.session.on('change',function(){
         //comet.doRequest("L","ace.cpp");
         if(editor.session.getLength()!=total_lines)
         {
-        comet.doRequest("E",lang+" "+fname+"."+text_lang_ext+" "+"whole"+" "+editor.getValue());
-        total_lines=editor.session.getLength();
+            comet.doRequest("E",lang+" "+fname+"."+text_lang_ext+" "+"whole"+" "+editor.getValue());
+            total_lines=editor.session.getLength();
         }
         else
         {
@@ -314,7 +297,7 @@ editor.session.on('change',function(){
             console.log(lang+" "+fname+"."+text_lang_ext+" "+lineObj.row+" "+line);
         }
         console.log(editor.session.getLength());
-});
+        });
 
 $("#Compile_Run").click(function(){
         compile();
