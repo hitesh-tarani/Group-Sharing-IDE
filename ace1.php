@@ -136,8 +136,8 @@ $("#editor001").html("<div class='row'><div class='col-md-6'><div class='form-gr
 "<div class='col-md-3'><input id='Filename' type='text' class='form-control' placeholder='Enter_File_Name'></div>"+
         "<div id='Share'><button type='button'>Share File</button></div>"+
         "<div class='col-md-3'><input id='Share_user' type='text' class='form-control' placeholder='Enter username to share'></div>"+
-"<div class='col-md-3'><textarea id='custom_input' type='text' style='height:160px; width:350px;' class='form-control' placeholder='Enter custom input'></textarea></div>"+
-"<div class='col-md-3'><textarea disabled id='output' type='text' style='height:160px; width:350px; cursor:default;' class='form-control' placeholder='The output for the program will be presented here'></textarea></div></section>");
+"<div class='col-md-3'><textarea id='custom_input' type='text' style='height:160px; width:350px; resize:none;' class='form-control' placeholder='Enter custom input'></textarea></div>"+
+"<div class='col-md-3'><textarea disabled id='output' type='text' style='height:160px; width:350px; resize:none; cursor:default;' class='form-control' placeholder='The output for the program will be presented here'></textarea></div></section>");
 var login = "<?php echo $loginid ?>";
 </script>
 <script>
