@@ -1,7 +1,1 @@
-Savecode c one #include <stdio.h>
-
-int main(void) {
-    //Write your code here
-    printf("1");
-    return 0;
-}
+E cpp . whole 

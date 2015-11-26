@@ -35,60 +35,74 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
 <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
 <meta content="utf-8" http-equiv="encoding">
 <title>Ace autocompletion test</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="bin/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="bin/css/agency.css" rel="stylesheet">
+
 <style type="text/css" media="screen">
 #editor {
-    position: absolute;
-top: 50px;
-right: 0;
-bottom:0;
-left:40px;
-width:1200px;
-height:400px;
-}
-.editor_lang{
-display:block;
-position:relative;	
-width:200px;
-height:30px;
-       font-family:Arial,Helvetica,sans-serif;
-color:#635348;
-      background-color:#fff;
-}
-.select{
-    box-sizing: border-box;
-cursor: pointer;
-}
-.li{
-cursor: pointer;
-}
-#Load{
+            position: relative;
+            top: 10px;
+            right: 0;
+						bottom:0;
+						left:0px;
+						width:1200px;
+						height:400px;
+		 }
+		.editor_lang{
+			display:block;
+			position:absolute;
+			top:20px;	
+			width:200px;
+			height:30px;
+			font-family:Arial,Helvetica,sans-serif;
+			color:#635348;
+			background-color:#fff;
+		}
+		select{
+			box-sizing: border-box;
+			cursor: pointer;
+		}
+		li{
+			cursor: pointer;
+		}
+        #Load{
+            position:relative;
+            top:-6px;
+            left:70px;
+        }
+		#Compile_Run{
+			position: relative;
+			top: 20px;
+		}
+		#Save{
+			position: relative;
+			top: 20px;
+		}
+		#Filename{
+			position: relative;
+			top: 0px;
+                        left:-15px;
+		}
+        #output{
+            position:relative;
+            top: -80px;
+            left: -100px;
+        }#Share{
 position:relative;
-top:420px;
-}
-#Compile_Run{
-position: relative;
-top: 420px;
-}
-#Save{
-position: relative;
-top: 420px;
-}
-#Filename{
-position: relative;
-top: 420px;
-}
-#output{
-position:relative;
-top: 440px;
-left: 100px;
-}
-#Share{
-position:relative;
-top:420px;
+top:40px;
+left:-285px;
 }
 #Share_user{
 position:relative;
-top:420px;
+top:45px;
+left:-300px;
+}
+#custom_input{
+position:relative;
+top:-80px;
+left:-250px;
 }
 </style>
 </head>
@@ -102,27 +116,28 @@ top:420px;
 var text = {cpp:"#include <iostream>\nusing namespace std;\n\nint main(){\n    //Write your code here\n    \n    return 0;\n}",c:"#include <stdio.h>\n\nint main(void) {\n    //Write your code here\n    \n    return 0;\n}",python:"#Write your Code Here\n",java:"import java.util.*;\nimport java.lang.*;\nimport java.io.*;\n\n/* Name of the class has to be \"Main\" only if the class is public. */\nclass Test\n{\n	public static void main (String[] args) throws java.lang.Exception\n	{\n		// your code goes here\n	}\n}"};
 </script>
 
-
-<div style="width:500px;height:500px">
-<div id="editor001" class="editor_lang">
+<section id="login">
+<div>
+<div id="editor001" class="container" style="margin-top: -130px;">
 <script>
-$("#editor001").html("<select id='editor002' class='editor_lang'>"+
-        "<option id='editor101' class='lang-select' value='c_cpp' selected>C++ 4.9.2</option>"+
-        "<option id='editor102' class='lang-select' value='c_cpp'>C</option>"+
-        "<option id='editor103' class='lang-select' value='python'>Python</option>"+
-        "<option id='editor104' class='lang-select' value='java'>Java</option>"+
-        "</select>"+
-        "</div>"+
-        "<div id='test'>0:0</div>"+
-        "<div id='editor'></div>"+
-        "</div>"+
-        "<div id='Compile_Run'><button type='button'>Compile,Run</button></div>"+
-        "<div id='Save'><button type='button'>Saveas</button></div>"+
-        "<div id='Load'><button type='button'>Load File</button></div>"+
-        "<div><input id='Filename' type='text' placeholder='Enter_File_Name'></div>"+
+$("#editor001").html("<div class='row'><div class='col-md-6'><div class='form-group'><select style='width: 200px; margin-bottom:-20px' id='editor002' class='form-control'>"+
+			"<option id='editor101' class='lang-select' value='c_cpp' selected>C++ 4.9.2</option>"+
+			"<option id='editor102' class='lang-select' value='c_cpp'>C</option>"+
+			"<option id='editor103' class='lang-select' value='python'>Python</option>"+
+			"<option id='editor104' class='lang-select' value='java'>Java</option>"+
+		"</select>"+"</div></div></div>"+
+	"</div>"+
+	"<div id='test'>0:0</div>"+
+    "<div id='editor'></div>"+
+"</div>"+
+"<div id='Compile_Run'><button type='button'>Compile,Run</button></div>"+
+"<div id='Save'><button type='button'>Saveas</button></div>"+
+"<div id='Load'><button type='button'>Load File</button></div>"+
+"<div class='col-md-3'><input id='Filename' type='text' class='form-control' placeholder='Enter_File_Name'></div>"+
         "<div id='Share'><button type='button'>Share File</button></div>"+
-        "<div><input id='Share_user' type='text' placeholder='Enter username to share'></div>"+
-        "<div id='output'></div>");
+        "<div class='col-md-3'><input id='Share_user' type='text' class='form-control' placeholder='Enter username to share'></div>"+
+"<div class='col-md-3'><textarea id='custom_input' type='text' style='height:160px; width:350px;' class='form-control' placeholder='Enter custom input'></textarea></div>"+
+"<div class='col-md-3'><textarea disabled id='output' type='text' style='height:160px; width:350px; cursor:default;' class='form-control' placeholder='The output for the program will be presented here'></textarea></div></section>");
 var login = "<?php echo $loginid ?>";
 </script>
 <script>
