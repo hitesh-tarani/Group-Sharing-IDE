@@ -39,14 +39,14 @@ if ($msg != '')
     file_put_contents($filename1,$a);
     switch ($msg) {
         case 'E': //edit line or whole
-            $line=split(" ", $content,4);
-            $lang=$line[0];
-            $fname=$line[1];
+        $line=split(" ", $content,4);
+        $lang=$line[0];
+        $fname=$line[1];
             /*if($lang!="python")
               $lang_file=$fname.".".$lang;
               else
               $lang_file=$fname.".py";*/
-            if($line[2]=="whole")
+              if($line[2]=="whole")
                 file_put_contents($fname,$line[3]);
             else
                 shell_exec("sed -i '".$line[2]."s`.*`".$line[3]."`' ".$fname);
@@ -56,50 +56,50 @@ if ($msg != '')
             break;
 
         case 'S': //start
-            $lang=$content;
-            $code=file_get_contents($lang."_default");
-            if($lang!="python")
-                file_put_contents("temp.".$lang,$code);
-            else
-                file_put_contents("temp.py",$code);
-            file_put_contents($outfile,"");
-            break;
+        $lang=$content;
+        $code=file_get_contents($lang."_default");
+        if($lang!="python")
+            file_put_contents("temp.".$lang,$code);
+        else
+            file_put_contents("temp.py",$code);
+        file_put_contents($outfile,"");
+        break;
 
         case 'L': //load file
-            file_put_contents($timestamp,time());
-            file_put_contents($outfile,"");
-            break;
+        file_put_contents($timestamp,time());
+        file_put_contents($outfile,"");
+        break;
 
         case 'Run': //Compile and run code
-            $text=split(" ",$content,3);
-            $lang=$text[0];
-            $fname=$text[1];
+        $text=split(" ",$content,3);
+        $lang=$text[0];
+        $fname=$text[1];
             /*if($lang!="python")
               $lang_file=$fname.".".$lang;
               else
               $lang_file=$fname.".py";*/
-            $code=$text[2];
-            file_put_contents($fname,$code);
-            shell_exec("bash ".$back_dir."/".$lang."_run ".$fname);
+              $code=$text[2];
+              file_put_contents($fname,$code);
+              shell_exec("bash ".$back_dir."/".$lang."_run ".$fname);
             //echo "this is ".$x." code";
-            file_put_contents($timestamp,time());
+              file_put_contents($timestamp,time());
             //file_put_contents('output.txt',$x);
-            break;
+              break;
 
         case 'Savecode': //save code in file
-            $text=split(" ",$content,3);
-            $lang=$text[0];
+        $text=split(" ",$content,3);
+        $lang=$text[0];
             /*if($lang!="python")
               $filenamefinal=$text[1].".".$lang;
               else
               $filenamefinal=$text[1].".py";*/
-            $filenamefinal=$text[1];
-            $code=$text[2];
-            $query="SELECT File_id FROM Files natural join Sharing WHERE Files.File_name='$filenamefinal' and Sharing.Login_id='$loginid'";
-            $query_run = mysqli_query($con,$query) ;
-            $query_num_rows= mysqli_num_rows($query_run);
+              $filenamefinal=$text[1];
+              $code=$text[2];
+              $query="SELECT File_id FROM Files natural join Sharing WHERE Files.File_name='$filenamefinal' and Sharing.Login_id='$loginid'";
+              $query_run = mysqli_query($con,$query) ;
+              $query_num_rows= mysqli_num_rows($query_run);
 
-            if($query_num_rows==0){
+              if($query_num_rows==0){
                 //insert into query
                 $query2="insert into Files (File_name) values ('$filenamefinal')"; 
                 $query_run2 = mysqli_query($con,$query2) ;
@@ -136,7 +136,7 @@ if ($msg != '')
             }
             break;
 
-        case 'Share':
+            case 'Share':
             $text=split(" ",$content,2);
             $templogin=$text[0];
             $tempfile=$text[1];
@@ -160,15 +160,15 @@ if ($msg != '')
                 chdir($prevdir);
             }
             break;
-        default:break;
+            default:break;
+        }
+
+        die();
     }
 
-    die();
-}
-
 // infinite loop until the output file is not modified
-$lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;
-$currentmodif = filemtime($timestamp);
+    $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;
+    $currentmodif = filemtime($timestamp);
 while ($currentmodif <= $lastmodif) // check if the data file has been modified
 {
     usleep(10000); // sleep 10ms to unload the CPU
