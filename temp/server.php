@@ -1,4 +1,5 @@
 <script src="ot.js"></script>
+<script src="server.js"></script>
 <script>
 var server = new ot.Server("lorem ipsum");
 server.broadcast = function (operation) {

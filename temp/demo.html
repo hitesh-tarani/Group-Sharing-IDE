@@ -18,13 +18,14 @@ client.applyOperation = function (operation) {
     // operation.applyToCodeMirror(cm);
 };
 
-client.sendOperation = function (operation) {
+client.sendOperation = function (revision,operation) {
     // send the operation to the server, e.g. with ajax:
     $.ajax({
 url: 'server.html',
-type: 'POST',
+type: 'GET',
 contentType: 'application/json',
-data: JSON.stringify(operation)
+data: JSON.stringify(operation),
+revision_no: revision
 });
 };
 
@@ -43,8 +44,9 @@ $("#Apply").click(function(){
         var text=$("#output").html();
         //var text="adf";
         //console.log(text);
-        var newtext=operation.apply(text);
-        client.sendOperation(operation);
+        //var newtext=operation.apply(text);
+        console.log(client.revision);
+        client.applyClient(operation);
         console.log(operation.baseLength+" "+newtext+" "+operation.targetLength);
 
         });
