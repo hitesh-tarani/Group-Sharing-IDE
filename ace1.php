@@ -69,7 +69,7 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
 		}
 		#Load{
 			position:relative;
-			top:-6px;
+			top:-3px;
 			left:70px;
 		}
 		#Compile_Run{
@@ -78,7 +78,7 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
 		}
 		#Save{
 			position: relative;
-			top: 20px;
+			top: 23px;
 		}
 		#Filename{
 			position: relative;
@@ -89,7 +89,8 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
 			position:relative;
 			top: -80px;
 			left: -100px;
-		}#Share{
+		}
+		#Share{
 			position:relative;
 			top:40px;
 			left:-285px;
@@ -153,7 +154,7 @@ var login = "<?php echo $loginid ?>";
 		connect: function()
 		{
 			this.ajax = new Ajax.Request(this.url, {
-				method: 'get',
+				method: 'post',
 				parameters: { 'login' : login ,'timestamp' : this.timestamp },
 				onSuccess: function(transport) {
 // handle the server response
@@ -236,7 +237,7 @@ $('#output').html(response['output']);
 doRequest: function(request,content)
 {
 	new Ajax.Request(this.url, {
-		method: 'get',
+		method: 'post',
 		parameters: { 'login' : login ,'msg' : request ,'content': content}
 	});
 }
@@ -336,6 +337,7 @@ $("#Compile_Run").click(function(){
 });
 
 function compile(){
+	var input=$('textarea#custom_input').val();
 	var lang=$("#editor002").val();
 	var selected_option = $('#editor002 option:selected');
 	if(lang=="c_cpp")
@@ -346,7 +348,7 @@ function compile(){
 			lang="c";
 	}
 	var code=editor.getValue();
-	var final_code=lang+" "+fname+"."+text_lang_ext+" "+code;
+	var final_code=lang+"`"+fname+"."+text_lang_ext+"`"+code+"`"+input;
 	console.log(final_code);
 	comet.doRequest("Run",final_code);
 }

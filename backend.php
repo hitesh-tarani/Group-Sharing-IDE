@@ -16,7 +16,7 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
 
 }
 
-$loginid=$_GET['login'];
+$loginid=$_POST['login'];
 chdir('./bin/user_files/'.$loginid);
 $currentdirectory=getcwd();
 //shell_exec('sudo chmod -R 0777 '.$currentdirectory);
@@ -30,8 +30,8 @@ $back_dir=dirname(__FILE__);
 // store new message in the file
 $response = array();
 
-$msg = isset($_GET['msg']) ? $_GET['msg'] : '';
-$content = isset($_GET['content']) ? $_GET['content'] : '';
+$msg = isset($_POST['msg']) ? $_POST['msg'] : '';
+$content = isset($_POST['content']) ? $_POST['content'] : '';
 
 if ($msg != '')
 {
@@ -71,7 +71,7 @@ if ($msg != '')
         break;
 
         case 'Run': //Compile and run code
-        $text=split(" ",$content,3);
+        $text=split("`",$content,4);
         $lang=$text[0];
         $fname=$text[1];
             /*if($lang!="python")
@@ -79,6 +79,9 @@ if ($msg != '')
               else
               $lang_file=$fname.".py";*/
               $code=$text[2];
+              $input=$text[3];
+              echo $text." Hello ".$content;
+              file_put_contents("input.dat", $input);
               file_put_contents($fname,$code);
               shell_exec("bash ".$back_dir."/".$lang."_run ".$fname);
             //echo "this is ".$x." code";
@@ -167,7 +170,7 @@ if ($msg != '')
     }
 
 // infinite loop until the output file is not modified
-    $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;
+    $lastmodif    = isset($_POST['timestamp']) ? $_POST['timestamp'] : 0;
     $currentmodif = filemtime($timestamp);
 while ($currentmodif <= $lastmodif) // check if the data file has been modified
 {
