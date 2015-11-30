@@ -7,7 +7,8 @@ if($loginid=='')
 }
 if($loginid=='anonymous')
 {
-$time=time();
+	chdir('./bin/user_files/'.$loginid);
+	$time=time();
 
 //$timestamp=dirname(__FILE__).'/timestamp.txt';
 //echo $timestamp;

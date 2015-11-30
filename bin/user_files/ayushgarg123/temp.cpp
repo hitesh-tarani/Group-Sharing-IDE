@@ -3,8 +3,6 @@ using namespace std;
 
 int main(){
     //Write your code here
-    int n;
-    cin>>n;
-    cout<<n;
+    cout << "hello";
     return 0;
 }
