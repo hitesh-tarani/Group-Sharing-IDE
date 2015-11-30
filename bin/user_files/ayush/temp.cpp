@@ -1,8 +1,7 @@
-#include <iostream>
-using namespace std;
+#include <stdio.h>
 
-int main(){
+int main(void) {
     //Write your code here
-    cout<< "Hellop";
+    
     return 0;
 }

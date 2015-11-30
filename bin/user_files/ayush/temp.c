@@ -1,4 +1,4 @@
-E cpp temp.c whole #include <iostream>
+#include <iostream>
 using namespace std;
 
 int main(){

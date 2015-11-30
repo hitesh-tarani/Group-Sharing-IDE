@@ -14,7 +14,14 @@ if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) ||
     die($conn_error);
 
 }
-
+if(isset($_POST['anonymous']))
+{
+    $loginid='anonymous';
+    session_start();
+    $_SESSION["loginid"] = $loginid;
+    
+    header("Location: ../ace1.php");
+}
 if(isset($_POST['loginid'])){
 
 
@@ -153,9 +160,11 @@ if(isset($_POST['loginid1'])){
         <div class="container">
             <div class="intro-text">
                 <br><br><br><br>
+                <form action="home.php" method="post">
                 <!--<div style="color: #185875" class="intro-heading">Code, Share And Run!</div>-->
                 <!--<div style="color: #185875" class="intro-lead-in">Coding in group was never easier!</div>-->
-                <a href="#login" class="page-scroll btn btn-xl">Login</a>
+                <button id="anonymous" name="anonymous" type="submit" class="btn btn-xl">Anonymous</button>
+                </form>
             </div>
         </div>
     </header>
