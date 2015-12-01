@@ -1,1 +1,1 @@
-python $1 > output.txt
+python $1 < input.dat > output.txt

@@ -1,2 +1,2 @@
 gcc temp.c
-./a.out > output.txt
+./a.out < input.dat > output.txt

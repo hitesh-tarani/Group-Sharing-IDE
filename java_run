@@ -1,0 +1,5 @@
+
+file=$1
+javac $file
+filename="${file%.*}"
+java $filename > output.txt
