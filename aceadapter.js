@@ -3,6 +3,7 @@
 
  ACEAdapter = (function(global) {
   ACEAdapter.prototype.ignoreChanges = false;
+  ACEAdapter.prototype.onload = false;
   ACEAdapter.prototype.grabDocumentState = function() {
     this.lastDocLines = this.aceDoc.getAllLines();
     return this.lastCursorRange = this.aceSession.selection.getRange();
@@ -53,16 +54,18 @@
 
   ACEAdapter.prototype.onChange = function(change) {
     var pair;
+    console.log(editor2.ignoreChanges);
     console.log(change);
-    if (!this.ignoreChanges) {
-      pair = this.operationFromACEChange(change);
-      console.log(pair);
-      this.trigger.apply(this, ['change'].concat(slice.call(pair)));
+    if (!this.ignoreChanges &&!this.onload) {
+      //this.ignoreChanges=true;
+      console.log(this.aceDoc);
+      this.pair = this.operationFromACEChange(change);
+      this.trigger.apply(this, ['change'].concat(slice.call(this.pair)));
       return this.grabDocumentState();
     }
+    this.ignoreChanges=false;
+    return this.grabDocumentState();
   };
-
-  
   
   ACEAdapter.prototype.onBlur = function() {
     if (this.ace.selection.isEmpty()) {
@@ -96,6 +99,7 @@
       start = this.indexFromPos(delta.range.start);
     } else {
       text = change.lines.join('\n');
+      //console.log(text);
       start = this.indexFromPos(change.start);
     }
     restLength = this.lastDocLines.join('\n').length - start;
@@ -114,23 +118,31 @@
   };
 
   ACEAdapter.prototype.applyOperationToACE = function(operation) {
+    if(!this.ignoreChanges)
+    {
     var from, index, j, len, op, range, ref, to;
     index = 0;
     ref = operation.ops;
     for (j = 0, len = ref.length; j < len; j++) {
       op = ref[j];
-      if (op.isRetain()) {
-        index += op.chars;
-      } else if (op.isInsert()) {
-        this.aceDoc.insert(this.posFromIndex(index), op.text);
-        index += op.text.length;
-      } else if (op.isDelete()) {
+      if (ot.TextOperation.isRetain(op)) {
+        index += op;
+        console.log(op);
+      } else if (ot.TextOperation.isInsert(op)) {
+        this.aceDoc.insert(this.posFromIndex(index), op);
+        console.log(op);
+        index += op.length;
+      } else if (ot.TextOperation.isDelete(op)) {
+        console.log(op);
         from = this.posFromIndex(index);
-        to = this.posFromIndex(index + op.chars);
+        to = this.posFromIndex(index + op);
         range = this.aceRange.fromPoints(from, to);
+        console.log(range);
         this.aceDoc.remove(range);
       }
     }
+    }
+    this.ignoreChanges=true;
     return this.grabDocumentState();
   };
 

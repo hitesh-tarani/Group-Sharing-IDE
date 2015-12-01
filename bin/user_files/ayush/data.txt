@@ -1,1 +1,1 @@
-cpp one.c ["#include <stdio.h>\n\nint main(void) {\n    //Write your code here\n    printf(\"1\\n\");\n    return 0;\n}"]
+E cpp game.cpp [125,"\n",21]

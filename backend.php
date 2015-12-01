@@ -52,7 +52,6 @@ if ($msg != '')
             $query_num_rows= mysqli_num_rows($query_run);
             if($query_num_rows>0)
             {
-            echo"11";
                 $prevdir=getcwd();
                 chdir('./../');
                 $tempdir=getcwd();
@@ -61,26 +60,27 @@ if ($msg != '')
                 {
                     $tempfileid=$row["File_id"];
                 }
-                $query4="select Login_id from Sharing where File_id='$tempfileid'"; 
+                $query4="select Login_id from Sharing where File_id='$tempfileid' and Login_id!='$loginid'"; 
                 $query_run4 = mysqli_query($con,$query4) ;
                 $query_num_rows= mysqli_num_rows($query_run);
 
                 while($row=mysqli_fetch_assoc($query_run4))
                 {
                     $templogin=$row["Login_id"];
+                    echo $templogin;
                     chdir($tempdir.'/'.$templogin);
                     $logintime=file_get_contents("timestamp.txt");
                     if($temptime-$logintime<600)
                     {
-                        file_put_contents("data.txt",$content);
-                        file_put_contents($timestamp,time());
+                        file_put_contents("data.txt","E ".$content);
+                        file_put_contents("timestamp.txt",time());
                     }
                     else
                     {
                         $fileload=file_get_contents($fname);
-                        echo $templogin;
+                        //echo $templogin;
                     }
-                    echo "
+                    /*echo "
                         <!DOCTYPE html>
 <meta http-equiv='Content-Type' content='text/html'; charset='utf-8'>
 
@@ -91,7 +91,7 @@ if ($msg != '')
                     var operation = ot.TextOperation.fromJSON(JSON.parse('".$line[2]."'));console.log(operation);
                     //console.log(op.apply(".$templogin."));
                     console.log(op.apply('Hello'));
-                    </script>";
+                    </script>";*/
                 }
             }
             /*if($line[2]=="whole")
@@ -225,7 +225,7 @@ $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;
 $currentmodif = filemtime($timestamp);
 while ($currentmodif <= $lastmodif) // check if the data file has been modified
 {
-    usleep(10000); // sleep 10ms to unload the CPU
+    usleep(100); // sleep 10ms to unload the CPU
     clearstatcache();
     $currentmodif = filemtime($timestamp);
 }
@@ -241,9 +241,9 @@ if($last_msg=='L')
 }
 else if($last_msg=='E')
 {
-    $edit=split(" ",$last[1],4);
+    $edit=split(" ",$last[1],3);
     $fname=pathinfo($edit[1],PATHINFO_FILENAME);
-    $response['Edit'] = array($edit[0],$fname,$edit[2],$edit[3]);
+    $response['Edit'] = array($edit[0],$fname,$edit[2]);
 }
 $response['output'] = file_get_contents($outfile);
 $response['timestamp'] = $currentmodif;

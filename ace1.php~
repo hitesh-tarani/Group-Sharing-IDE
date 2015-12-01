@@ -216,11 +216,11 @@ handleResponse: function(response)
         var ind=rem.indexOf(' ');
         fname=rem.substr(0,ind);
         var code=rem.substr(ind+1);
-        editor2.onload=true;        
+        //editor2.onload=true;        
         editor.setValue(code);
         //console.log(code);
         editor.gotoLine(1,0,false);
-        editor2.onload=false;
+        //editor2.onload=false;
     }
     else if(response['Edit'])
     {
