@@ -1,7 +1,7 @@
  //var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   var slice = [].slice;
 
- ot.ACEAdapter = (function(global) {
+ ACEAdapter = (function(global) {
   ACEAdapter.prototype.ignoreChanges = false;
   ACEAdapter.prototype.grabDocumentState = function() {
     this.lastDocLines = this.aceDoc.getAllLines();
@@ -105,10 +105,10 @@
     insert_op = new ot.TextOperation().retain(start).insert(text).retain(restLength);
     delete_op = new ot.TextOperation().retain(start)["delete"](text).retain(restLength);
     if (change.action === 'remove') {
-      comet.doRequest("E",lang+" "+fname+"."+text_lang_ext+" "+JSON.stringify(delete_op));
+      comet.doRequest("E",lang+" "+fname+"."+text_lang_ext+" "+delete_op);
       return [delete_op, insert_op];
     } else {
-      comet.doRequest("E",lang+" "+fname+"."+text_lang_ext+" "+JSON.stringify(insert_op));
+      comet.doRequest("E",lang+" "+fname+"."+text_lang_ext+" "+insert_op);
       return [insert_op, delete_op];
     }
   };

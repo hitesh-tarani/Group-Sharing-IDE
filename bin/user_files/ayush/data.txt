@@ -1,8 +1,1 @@
-E cpp temp.c whole #include <iostream>
-using namespace std;
-
-int main(){
-    //Write your code here
-    
-    return 0;
-}
+cpp one.c ["#include <stdio.h>\n\nint main(void) {\n    //Write your code here\n    printf(\"1\\n\");\n    return 0;\n}"]

@@ -5,27 +5,41 @@ if($loginid=='')
 {
     header("Location:bin/mbox/sessionexpired.php");
 }
-chdir('./bin/user_files/'.$loginid);
-$time=time();
+if($loginid=='anonymous')
+{
+	chdir('./bin/user_files/'.$loginid);
+	$time=time();
 
 //$timestamp=dirname(__FILE__).'/timestamp.txt';
 //echo $timestamp;
 
-file_put_contents('timestamp.txt',$time);
-file_put_contents('output.txt',"");
-$conn_error ='could not connect.';
+	file_put_contents('timestamp.txt',$time);
+	file_put_contents('output.txt',"");
+}
+else
+{
+	chdir('./bin/user_files/'.$loginid);
+	$time=time();
 
-$mysql_host ='localhost';
-$mysql_user ='root';
-$mysql_pass ='hitesh_1995';
+//$timestamp=dirname(__FILE__).'/timestamp.txt';
+//echo $timestamp;
 
-$mysql_db ='ide';
+	file_put_contents('timestamp.txt',$time);
+	file_put_contents('output.txt',"");
+	$conn_error ='could not connect.';
+
+	$mysql_host ='localhost';
+	$mysql_user ='root';
+	$mysql_pass ='hitesh_1995';
+
+	$mysql_db ='ide';
 
 
-if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) || !mysqli_select_db($con, $mysql_db)){
+	if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) || !mysqli_select_db($con, $mysql_db)){
 
-    die($conn_error);
+		die($conn_error);
 
+	}
 }
 
 ?>
@@ -124,23 +138,23 @@ var text = {cpp:"#include <iostream>\nusing namespace std;\n\nint main(){\n    /
 <div id="editor001" class="container" style="margin-top: -130px;">
 <script>
 $("#editor001").html("<div class='row'><div class='col-md-6'><div class='form-group'><select style='width: 200px; margin-bottom:-20px' id='editor002' class='form-control'>"+
-        "<option id='editor101' class='lang-select' value='c_cpp' selected>C++ 4.9.2</option>"+
-        "<option id='editor102' class='lang-select' value='c_cpp'>C</option>"+
-        "<option id='editor103' class='lang-select' value='python'>Python</option>"+
-        "<option id='editor104' class='lang-select' value='java'>Java</option>"+
-        "</select>"+"</div></div></div>"+
-        "</div>"+
-        "<div id='test'>1:0</div>"+
-        "<div id='editor'></div>"+
-        "</div>"+
-        "<div id='Compile_Run'><button type='button'>Compile,Run</button></div>"+
-        "<div id='Save'><button type='button'>Saveas</button></div>"+
-        "<div id='Load'><button type='button'>Load File</button></div>"+
-        "<div class='col-md-3'><input id='Filename' type='text' class='form-control' placeholder='Enter_File_Name'></div>"+
-        "<div id='Share'><button type='button'>Share File</button></div>"+
-        "<div class='col-md-3'><input id='Share_user' type='text' class='form-control' placeholder='Enter username to share'></div>"+
-        "<div class='col-md-3'><textarea id='custom_input' type='text' style='height:160px; width:350px; resize:none;' class='form-control' placeholder='Enter custom input'></textarea></div>"+
-        "<div class='col-md-3'><textarea disabled id='output' type='text' style='height:160px; width:350px; resize:none; cursor:default;' class='form-control' placeholder='The output for the program will be presented here'></textarea></div></section>");
+					"<option id='editor101' class='lang-select' value='c_cpp' selected>C++ 4.9.2</option>"+
+					"<option id='editor102' class='lang-select' value='c_cpp'>C</option>"+
+					"<option id='editor103' class='lang-select' value='python'>Python</option>"+
+					"<option id='editor104' class='lang-select' value='java'>Java</option>"+
+					"</select>"+"</div></div></div>"+
+					"</div>"+
+					"<div id='test'>1:0</div>"+
+					"<div id='editor'></div>"+
+					"</div>"+
+					"<div id='Compile_Run'><button type='button'>Compile,Run</button></div>"+
+					"<div id='Save'><button <?php if($loginid=='anonymous') echo 'disabled'; ?> type='button'>Saveas</button></div>"+
+					"<div id='Load'><button <?php if($loginid=='anonymous') echo 'disabled'; ?> type='button'>Load File</button></div>"+
+					"<div class='col-md-3'><input <?php if($loginid=='anonymous') echo 'disabled'; ?> id='Filename' type='text' class='form-control' placeholder='Enter_File_Name'></div>"+
+					"<div id='Share'><button <?php if($loginid=='anonymous') echo 'disabled'; ?> type='button'>Share File</button></div>"+
+					"<div class='col-md-3'><input <?php if($loginid=='anonymous') echo 'disabled'; ?> id='Share_user' type='text' class='form-control' placeholder='Enter username to share'></div>"+
+					"<div class='col-md-3'><textarea id='custom_input' type='text' style='height:160px; width:350px; resize:none;' class='form-control' placeholder='Enter custom input'></textarea></div>"+
+					"<div class='col-md-3'><textarea disabled id='output' type='text' style='height:160px; width:350px; resize:none; cursor:default;' class='form-control' placeholder='The output for the program will be presented here'></textarea></div></section>");
 var login = "<?php echo $loginid ?>";
 </script>
 <script>

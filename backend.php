@@ -50,9 +50,9 @@ if ($msg != '')
             $query="SELECT File_id FROM Files natural join Sharing WHERE Files.File_name='$fname' and Sharing.Login_id='$loginid'";
             $query_run = mysqli_query($con,$query) ;
             $query_num_rows= mysqli_num_rows($query_run);
-
             if($query_num_rows>0)
             {
+            echo"11";
                 $prevdir=getcwd();
                 chdir('./../');
                 $tempdir=getcwd();
@@ -73,6 +73,7 @@ if ($msg != '')
                     if($temptime-$logintime<600)
                     {
                         file_put_contents("data.txt",$content);
+                        file_put_contents($timestamp,time());
                     }
                     else
                     {
@@ -85,9 +86,12 @@ if ($msg != '')
 
 <meta content='utf-8' http-equiv='encoding'>
                     <script src='ot.js'></script>
-                    <script>var oper=".$line[2].";console.log(oper+'1');JSON.parse(JSON.stringify('1'));
+                    <script>var oper=".$line[2].";console.log(oper);JSON.parse(JSON.stringify('1'));
                     var op=new ot.TextOperation();
-                    var operation = op.fromJSON(JSON.parse('<?php echo $line[2]?>'));</script>";
+                    var operation = ot.TextOperation.fromJSON(JSON.parse('".$line[2]."'));console.log(operation);
+                    //console.log(op.apply(".$templogin."));
+                    console.log(op.apply('Hello'));
+                    </script>";
                 }
             }
             /*if($line[2]=="whole")

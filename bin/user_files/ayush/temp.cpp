@@ -1,6 +1,7 @@
-#include <stdio.h>
+#include <iostream>
+using namespace std;
 
-int main(void) {
+int main(){
     //Write your code here
     
     return 0;

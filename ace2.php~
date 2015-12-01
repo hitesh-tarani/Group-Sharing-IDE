@@ -5,27 +5,41 @@ if($loginid=='')
 {
     header("Location:bin/mbox/sessionexpired.php");
 }
-chdir('./bin/user_files/'.$loginid);
-$time=time();
+if($loginid=='anonymous')
+{
+	chdir('./bin/user_files/'.$loginid);
+	$time=time();
 
 //$timestamp=dirname(__FILE__).'/timestamp.txt';
 //echo $timestamp;
 
-file_put_contents('timestamp.txt',$time);
-file_put_contents('output.txt',"");
-$conn_error ='could not connect.';
+	file_put_contents('timestamp.txt',$time);
+	file_put_contents('output.txt',"");
+}
+else
+{
+	chdir('./bin/user_files/'.$loginid);
+	$time=time();
 
-$mysql_host ='localhost';
-$mysql_user ='root';
-$mysql_pass ='hitesh_1995';
+//$timestamp=dirname(__FILE__).'/timestamp.txt';
+//echo $timestamp;
 
-$mysql_db ='ide';
+	file_put_contents('timestamp.txt',$time);
+	file_put_contents('output.txt',"");
+	$conn_error ='could not connect.';
+
+	$mysql_host ='localhost';
+	$mysql_user ='root';
+	$mysql_pass ='hitesh_1995';
+
+	$mysql_db ='ide';
 
 
-if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) || !mysqli_select_db($con, $mysql_db)){
+	if(!($con=mysqli_connect ($mysql_host, $mysql_user , $mysql_pass, $mysql_db)) || !mysqli_select_db($con, $mysql_db)){
 
-    die($conn_error);
+		die($conn_error);
 
+	}
 }
 
 ?>
@@ -130,7 +144,7 @@ $("#editor001").html("<div class='row'><div class='col-md-6'><div class='form-gr
         "<option id='editor104' class='lang-select' value='java'>Java</option>"+
         "</select>"+"</div></div></div>"+
         "</div>"+
-        "<div id='test'>0:0</div>"+
+        "<div id='test'>1:0</div>"+
         "<div id='editor'></div>"+
         "</div>"+
         "<div id='Compile_Run'><button type='button'>Compile,Run</button></div>"+

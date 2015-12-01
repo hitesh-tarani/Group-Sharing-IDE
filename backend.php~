@@ -1,3 +1,4 @@
+
 <?php
 // session_start();
 // $loginid = $_SESSION["loginid"];
@@ -39,18 +40,64 @@ if ($msg != '')
     file_put_contents($filename1,$a);
     switch ($msg) {
         case 'E': //edit line or whole
-            $line=split(" ", $content,4);
+            $line=split(" ", $content,3);
             $lang=$line[0];
             $fname=$line[1];
             /*if($lang!="python")
               $lang_file=$fname.".".$lang;
               else
               $lang_file=$fname.".py";*/
-            if($line[2]=="whole")
+            $query="SELECT File_id FROM Files natural join Sharing WHERE Files.File_name='$fname' and Sharing.Login_id='$loginid'";
+            $query_run = mysqli_query($con,$query) ;
+            $query_num_rows= mysqli_num_rows($query_run);
+            if($query_num_rows>0)
+            {
+            echo"11";
+                $prevdir=getcwd();
+                chdir('./../');
+                $tempdir=getcwd();
+                $temptime=time();
+                while($row=mysqli_fetch_assoc($query_run))
+                {
+                    $tempfileid=$row["File_id"];
+                }
+                $query4="select Login_id from Sharing where File_id='$tempfileid'"; 
+                $query_run4 = mysqli_query($con,$query4) ;
+                $query_num_rows= mysqli_num_rows($query_run);
+
+                while($row=mysqli_fetch_assoc($query_run4))
+                {
+                    $templogin=$row["Login_id"];
+                    chdir($tempdir.'/'.$templogin);
+                    $logintime=file_get_contents("timestamp.txt");
+                    if($temptime-$logintime<600)
+                    {
+                        file_put_contents("data.txt",$content);
+                    }
+                    else
+                    {
+                        $fileload=file_get_contents($fname);
+                        echo $templogin;
+                    }
+                    echo "
+                        <!DOCTYPE html>
+<meta http-equiv='Content-Type' content='text/html'; charset='utf-8'>
+
+<meta content='utf-8' http-equiv='encoding'>
+                    <script src='ot.js'></script>
+                    <script>var oper=".$line[2].";console.log(oper);JSON.parse(JSON.stringify('1'));
+                    var op=new ot.TextOperation();
+                    var operation = ot.TextOperation.fromJSON(JSON.parse('".$line[2]."'));console.log(operation);
+                    //console.log(op.apply(".$templogin."));
+                    console.log(op.apply('Hello'));
+                    </script>";
+                }
+            }
+            /*if($line[2]=="whole")
                 file_put_contents($fname,$line[3]);
             else
                 shell_exec("sed -i '".$line[2]."s`.*`".$line[3]."`' ".$fname);
-            file_put_contents($timestamp,time());
+            file_put_contents($timestamp,time());*/
             //$x="sed -i '".$line[0]."s/.*/".$line[1]."/' ".$filename;
 
             break;
@@ -61,7 +108,6 @@ if ($msg != '')
             $fname=$line[1];
             //$code=file_get_contents($back_dir."/".$lang."_default");
             shell_exec("cp ".$back_dir."/".$lang."_default ".$fname);
-            echo "cp ".$back_dir."/".$lang."_default ".$fname;
             /*if($lang!="python")
                 file_put_contents("temp.".$lang,$code);
             else

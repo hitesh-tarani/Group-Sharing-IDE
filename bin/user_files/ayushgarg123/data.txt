@@ -1,8 +1,1 @@
-Run cpp`temp.cpp`#include <iostream>
-using namespace std;
-
-int main(){
-    //Write your code here
-    cout << "hello";
-    return 0;
-}`
+cpp one.c [-141]lude <stdio.h>\n\nint main(void) {\n    //Write your code here\n    printf(\"1\\n\");\n    return 0;\n}"]
