@@ -3,6 +3,7 @@
 
  ACEAdapter = (function(global) {
   ACEAdapter.prototype.ignoreChanges = false;
+  ACEAdapter.prototype.userchange = true;
   ACEAdapter.prototype.onload = false;
   ACEAdapter.prototype.grabDocumentState = function() {
     this.lastDocLines = this.aceDoc.getAllLines();
@@ -56,14 +57,15 @@
     var pair;
     console.log(editor2.ignoreChanges);
     console.log(change);
-    if (!this.ignoreChanges &&!this.onload) {
+    if (/*!this.ignoreChanges &&*/!this.onload && this.userchange) {
       //this.ignoreChanges=true;
       console.log(this.aceDoc);
       this.pair = this.operationFromACEChange(change);
       this.trigger.apply(this, ['change'].concat(slice.call(this.pair)));
       return this.grabDocumentState();
     }
-    this.ignoreChanges=false;
+    this.userchange=true;
+    //this.ignoreChanges=false;
     return this.grabDocumentState();
   };
   
@@ -118,8 +120,9 @@
   };
 
   ACEAdapter.prototype.applyOperationToACE = function(operation) {
-    if(!this.ignoreChanges)
-    {
+    this.userchange=false;
+    /*if(!this.ignoreChanges)
+    {*/
     var from, index, j, len, op, range, ref, to;
     index = 0;
     ref = operation.ops;
@@ -134,15 +137,17 @@
         index += op.length;
       } else if (ot.TextOperation.isDelete(op)) {
         console.log(op);
-        from = this.posFromIndex(index);
-        to = this.posFromIndex(index + op);
-        range = this.aceRange.fromPoints(from, to);
+        from = this.posFromIndex(index-op);
+        to = this.posFromIndex(index);
+        console.log(to);
+        console.log(from);
+        range = this.aceRange.fromPoints(to, from);
         console.log(range);
         this.aceDoc.remove(range);
       }
     }
-    }
-    this.ignoreChanges=true;
+    //}
+    //this.ignoreChanges=true;
     return this.grabDocumentState();
   };
 
@@ -246,7 +251,7 @@
 
   ACEAdapter.prototype.applyOperation = function(operation) {
     if (!operation.isNoop()) {
-      this.ignoreChanges = true;
+      //this.ignoreChanges = true;
     }
     this.applyOperationToACE(operation);
     return this.ignoreChanges = false;
