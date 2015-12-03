@@ -281,7 +281,7 @@ enableSnippets: true,
 enableLiveAutocompletion: true
 });
 var fname="temp";
-lang="cpp";
+var lang="cpp";
 var text_lang_ext="cpp";
 editor.setValue(text["cpp"]);
 //comet.doRequest("E",lang+" "+lineObj.row+" "+line);
@@ -294,7 +294,7 @@ var lineObj=editor.selection.getCursor();
 $("#test").html(lineObj.row+":"+lineObj.column);
 
 $("#editor002").change(function(){
-        var lang=$("#editor002").val();
+        lang=$("#editor002").val();
         var selected_option = $('#editor002 option:selected');
         if(lang=="c_cpp")
         {
