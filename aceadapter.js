@@ -55,13 +55,13 @@
 
   ACEAdapter.prototype.onChange = function(change) {
     var pair;
-    console.log(editor2.ignoreChanges);
-    console.log(change);
+    //console.log(editor2.ignoreChanges);
+    //console.log(change);
     if (/*!this.ignoreChanges &&*/!this.onload && this.userchange) {
       //this.ignoreChanges=true;
-      console.log(this.aceDoc);
+      //console.log(this.aceDoc);
       this.pair = this.operationFromACEChange(change);
-      this.trigger.apply(this, ['change'].concat(slice.call(this.pair)));
+      //this.trigger.apply(this, ['change'].concat(slice.call(this.pair)));
       return this.grabDocumentState();
     }
     this.userchange=true;

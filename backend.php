@@ -43,6 +43,7 @@ if ($msg != '')
             $line=split(" ", $content,3);
             $lang=$line[0];
             $fname=$line[1];
+            sleep(1);
             /*if($lang!="python")
               $lang_file=$fname.".".$lang;
               else
@@ -50,6 +51,8 @@ if ($msg != '')
             $query="SELECT File_id FROM Files natural join Sharing WHERE Files.File_name='$fname' and Sharing.Login_id='$loginid'";
             $query_run = mysqli_query($con,$query) ;
             $query_num_rows= mysqli_num_rows($query_run);
+            file_put_contents("data.txt","Edit ".$content);
+            file_put_contents("timestamp.txt",time());
             if($query_num_rows>0)
             {
                 $prevdir=getcwd();
@@ -225,7 +228,7 @@ $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;
 $currentmodif = filemtime($timestamp);
 while ($currentmodif <= $lastmodif) // check if the data file has been modified
 {
-    usleep(100); // sleep 10ms to unload the CPU
+    usleep(1000); // sleep 1ms to unload the CPU
     clearstatcache();
     $currentmodif = filemtime($timestamp);
 }

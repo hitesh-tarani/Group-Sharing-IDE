@@ -130,7 +130,7 @@ left:-250px;
 <script src="aceadapter.js"></script>
 
 <script>
-var text = {cpp:"#include <iostream>\nusing namespace std;\n\nint main(){\n    //Write your code here\n    \n    return 0;\n}",c:"#include <stdio.h>\n\nint main(void) {\n    //Write your code here\n    \n    return 0;\n}",python:"#Write your Code Here\n",java:"import java.util.*;\nimport java.lang.*;\nimport java.io.*;\n\n/* Name of the class has to be \"Main\" only if the class is public. */\nclass Test\n{\n	public static void main (String[] args) throws java.lang.Exception\n	{\n		// your code goes here\n	}\n}"};
+var text = {cpp:"#include <iostream>\nusing namespace std;\n\nint main(){\n    //Write your code here\n    \n    return 0;\n}",c:"#include <stdio.h>\n\nint main(void) {\n    //Write your code here\n    \n    return 0;\n}",python:"#Write your Code Here\n",java:"import java.util.*;\nimport java.lang.*;\nimport java.io.*;\n\n/* Name of the class has to be \"Main\" only if the class is public. */\nclass temp\n{\n	public static void main (String[] args) throws java.lang.Exception\n	{\n		// your code goes here\n	}\n}"};
 </script>
 
 <section id="login">

@@ -1,8 +1,1 @@
-Run cpp`temp.cpp`#include <iostream>
-using namespace std;
-
-int main(){
-    //Write your code here
-    cout << "hello1111111111111111111";
-    return 0;
-}`
+S cpp temp.cpp

@@ -216,11 +216,11 @@ handleResponse: function(response)
         var ind=rem.indexOf(' ');
         fname=rem.substr(0,ind);
         var code=rem.substr(ind+1);
-        //editor2.onload=true;        
+        editor2.onload=true;        
         editor.setValue(code);
         //console.log(code);
         editor.gotoLine(1,0,false);
-        //editor2.onload=false;
+        editor2.onload=false;
     }
     else if(response['Edit'])
     {
@@ -281,7 +281,7 @@ enableSnippets: true,
 enableLiveAutocompletion: true
 });
 var fname="temp";
-lang="cpp";
+var lang="cpp";
 var text_lang_ext="cpp";
 editor.setValue(text["cpp"]);
 //comet.doRequest("E",lang+" "+lineObj.row+" "+line);
@@ -294,7 +294,7 @@ var lineObj=editor.selection.getCursor();
 $("#test").html(lineObj.row+":"+lineObj.column);
 
 $("#editor002").change(function(){
-        var lang=$("#editor002").val();
+        lang=$("#editor002").val();
         var selected_option = $('#editor002 option:selected');
         if(lang=="c_cpp")
         {

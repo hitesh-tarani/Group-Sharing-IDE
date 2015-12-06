@@ -130,7 +130,7 @@ left:-250px;
 <script src="aceadapter.js"></script>
 
 <script>
-var text = {cpp:"#include <iostream>\nusing namespace std;\n\nint main(){\n    //Write your code here\n    \n    return 0;\n}",c:"#include <stdio.h>\n\nint main(void) {\n    //Write your code here\n    \n    return 0;\n}",python:"#Write your Code Here\n",java:"import java.util.*;\nimport java.lang.*;\nimport java.io.*;\n\n/* Name of the class has to be \"Main\" only if the class is public. */\nclass Test\n{\n	public static void main (String[] args) throws java.lang.Exception\n	{\n		// your code goes here\n	}\n}"};
+var text = {cpp:"#include <iostream>\nusing namespace std;\n\nint main(){\n    //Write your code here\n    \n    return 0;\n}",c:"#include <stdio.h>\n\nint main(void) {\n    //Write your code here\n    \n    return 0;\n}",python:"#Write your Code Here\n",java:"import java.util.*;\nimport java.lang.*;\nimport java.io.*;\n\n/* Name of the class has to be \"Main\" only if the class is public. */\nclass temp\n{\n	public static void main (String[] args) throws java.lang.Exception\n	{\n		// your code goes here\n	}\n}"};
 </script>
 
 <section id="login">
@@ -161,10 +161,12 @@ var login = "<?php echo $loginid ?>";
 
 var Comet = Class.create();
 Comet.prototype = {
-timestamp: 0,
+           timestamp: 0,
            url: './backend.php',
            noerror: true,
-
+           buffers: [],
+           ack: true,
+           funcrun: false,
            initialize: function() { },
 
            connect: function()
@@ -185,9 +187,12 @@ onComplete: function(transport)
 // send a new ajax request when this request is finished
 if (!this.comet.noerror)
 // if a connection problem occurs, try to reconnect each 5 seconds
-setTimeout(function(){ comet.connect() }, 5000); 
+setTimeout(function(){ comet.connect() }, 1000); 
 else
-this.comet.connect();
+{
+    this.comet.connect();
+    this.comet.ack=true;
+}
 this.comet.noerror = false;
 }
 });
@@ -216,9 +221,11 @@ handleResponse: function(response)
         var ind=rem.indexOf(' ');
         fname=rem.substr(0,ind);
         var code=rem.substr(ind+1);
+        editor2.onload=true;        
         editor.setValue(code);
-        console.log(code);
+        //console.log(code);
         editor.gotoLine(1,0,false);
+        editor2.onload=false;
     }
     else if(response['Edit'])
     {
@@ -227,11 +234,16 @@ handleResponse: function(response)
         var currLine=editor.selection.getCursor();  
         var lang1=data[0];
         var tempfile=data[1];
+        var operation=data[2];
         //console.log(fname+","+tempfile);
         //console.log(text_lang_ext+","+lang);
         if(tempfile==fname && text_lang_ext==lang1)
         {
-            var line=data[2];
+            var code=editor.getValue();
+            var newop = ot.TextOperation.fromJSON(JSON.parse(operation));
+            //console.log(newop);
+            editor2.applyOperationToACE(newop);
+            /*var line=data[2];
             var code=data[3];
             if(line=="whole")
             {
@@ -244,22 +256,66 @@ handleResponse: function(response)
                 var range=new Range(line-1, 0, line-1, Number.MAX_VALUE);
                 editor.session.replace(range, code);
                 console.log(range);
-            }
+            }*/
         }
         //console.log(response['Edit']);*/
     }    
     $('#output').html(response['output']);
 },
 
+processBuffer: function()
+{
+    this.funcrun=true;
+    while(this.buffers.length!=0)
+    {
+        if(this.ack==true)
+        {
+            this.ack=false;
+            var that=this;
+            console.log(this.buffers);
+            //setTimeout(function(){ new Ajax.Request(that.url,that.buffers.shift());    }, 1000);
+            new Ajax.Request(that.url,that.buffers.shift());
+        }
+        else
+        {
+            var that=this;
+            setTimeout(function(){ that.processBuffer();    }, 500);
+            break;
+        }
+    }
+    this.funcrun=false;
+},
+
 doRequest: function(request,content)
 {
-    new Ajax.Request(this.url, {
-method: 'get',
+    console.log("1 "+this.ack);
+    /*this.buffers.push({method: 'get',
 parameters: { 'login' : login ,'msg' : request ,'content': content}
 });
+console.log(this.buffers);
+new Ajax.Request(this.url,this.buffers.pop());*/
+if(this.ack==false)
+{
+    /*wait(1000);
+    setTimeout(function(){ comet.doRequest(request,content) }, 2000);*/
+    this.buffers.push({method: 'get',
+        parameters: { 'login' : login ,'msg' : request ,'content': content}
+        });
+}
+else
+{
+    if(!this.funcrun)
+    {
+        this.buffers.push({method: 'get',
+            parameters: { 'login' : login ,'msg' : request ,'content': content}
+            });
+        this.processBuffer();
+    }
+}
 }
 }
 var comet = new Comet();
+console.log(this.comet.buffers);
 comet.connect();
 </script><!--script src="../build/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script-->
 <script>    	
@@ -274,7 +330,7 @@ enableSnippets: true,
 enableLiveAutocompletion: true
 });
 var fname="temp";
-lang="cpp";
+var lang="cpp";
 var text_lang_ext="cpp";
 editor.setValue(text["cpp"]);
 //comet.doRequest("E",lang+" "+lineObj.row+" "+line);
@@ -287,7 +343,7 @@ var lineObj=editor.selection.getCursor();
 $("#test").html(lineObj.row+":"+lineObj.column);
 
 $("#editor002").change(function(){
-        var lang=$("#editor002").val();
+        lang=$("#editor002").val();
         var selected_option = $('#editor002 option:selected');
         if(lang=="c_cpp")
         {
