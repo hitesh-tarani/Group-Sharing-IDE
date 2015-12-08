@@ -43,7 +43,7 @@ if ($msg != '')
             $line=split(" ", $content,3);
             $lang=$line[0];
             $fname=$line[1];
-            sleep(1);
+            //sleep(1);
             /*if($lang!="python")
               $lang_file=$fname.".".$lang;
               else
@@ -52,13 +52,13 @@ if ($msg != '')
             $query_run = mysqli_query($con,$query) ;
             $query_num_rows= mysqli_num_rows($query_run);
             file_put_contents("data.txt","Edit ".$content);
-            file_put_contents("timestamp.txt",time());
+            file_put_contents("timestamp.txt",microtime(true));
             if($query_num_rows>0)
             {
                 $prevdir=getcwd();
                 chdir('./../');
                 $tempdir=getcwd();
-                $temptime=time();
+                $temptime=microtime(true);
                 while($row=mysqli_fetch_assoc($query_run))
                 {
                     $tempfileid=$row["File_id"];
@@ -76,7 +76,7 @@ if ($msg != '')
                     if($temptime-$logintime<600)
                     {
                         file_put_contents("data.txt","E ".$content);
-                        file_put_contents("timestamp.txt",time());
+                        file_put_contents("timestamp.txt",microtime(true));
                     }
                     else
                     {
@@ -101,7 +101,7 @@ if ($msg != '')
                 file_put_contents($fname,$line[3]);
             else
                 shell_exec("sed -i '".$line[2]."s`.*`".$line[3]."`' ".$fname);
-            file_put_contents($timestamp,time());*/
+            file_put_contents($timestamp,microtime(true));*/
             //$x="sed -i '".$line[0]."s/.*/".$line[1]."/' ".$filename;
 
             break;
@@ -120,7 +120,7 @@ if ($msg != '')
             break;
 
         case 'L': //load file
-            file_put_contents($timestamp,time());
+            file_put_contents($timestamp,microtime(true));
             file_put_contents($outfile,"");
             break;
 
@@ -139,7 +139,7 @@ if ($msg != '')
             file_put_contents($fname,$code);
             shell_exec("bash ".$back_dir."/".$lang."_run ".$fname);
             //echo "this is ".$x." code";
-            file_put_contents($timestamp,time());
+            file_put_contents($timestamp,microtime(true));
             //file_put_contents('output.txt',$x);
             break;
 
@@ -165,14 +165,14 @@ if ($msg != '')
                 $query_run3 = mysqli_query($con,$query3) ;
 
                 file_put_contents($filenamefinal,$code);
-                file_put_contents($timestamp,time());
+                file_put_contents($timestamp,microtime(true));
             }
             else
             {
                 $prevdir=getcwd();
                 chdir('./../');
                 $tempdir=getcwd();
-                $temptime=time();
+                $temptime=microtime(true);
                 while($row=mysqli_fetch_assoc($query_run))
                 {
                     $tempfileid=$row["File_id"];
@@ -225,12 +225,12 @@ if ($msg != '')
 
 // infinite loop until the output file is not modified
 $lastmodif    = isset($_GET['timestamp']) ? $_GET['timestamp'] : 0;
-$currentmodif = filemtime($timestamp);
+$currentmodif = file_get_contents($timestamp);
 while ($currentmodif <= $lastmodif) // check if the data file has been modified
 {
     usleep(1000); // sleep 1ms to unload the CPU
     clearstatcache();
-    $currentmodif = filemtime($timestamp);
+    $currentmodif = file_get_contents($timestamp);
 }
 
 $last = file_get_contents($filename1);
