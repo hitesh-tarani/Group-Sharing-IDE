@@ -123,9 +123,9 @@ left:-250px;
 </head>
 <body>
 <script type="text/javascript" src="prototype.js"></script>
-<script src="ace.js"></script>
+<script src="ace/ace.js"></script>
 <script src="jquery.min.js"></script>
-<script src="ext-language_tools.js"></script>
+<script src="ace/ext-language_tools.js"></script>
 <script src="ot.js"></script>
 <script src="aceadapter.js"></script>
 
