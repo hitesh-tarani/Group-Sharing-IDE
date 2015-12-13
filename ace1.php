@@ -8,7 +8,7 @@ if($loginid=='')
 if($loginid=='anonymous')
 {
 	chdir('./bin/user_files/'.$loginid);
-	$time=time();
+	$time=microtime(true);
 
 //$timestamp=dirname(__FILE__).'/timestamp.txt';
 //echo $timestamp;
@@ -19,7 +19,7 @@ if($loginid=='anonymous')
 else
 {
 	chdir('./bin/user_files/'.$loginid);
-	$time=time();
+	$time=microtime(true);
 
 //$timestamp=dirname(__FILE__).'/timestamp.txt';
 //echo $timestamp;
@@ -161,10 +161,12 @@ var login = "<?php echo $loginid ?>";
 
 var Comet = Class.create();
 Comet.prototype = {
-timestamp: 0,
+           timestamp: 0,
            url: './backend.php',
            noerror: true,
-
+           buffers: [],
+           ack: true,
+           funcrun: false,
            initialize: function() { },
 
            connect: function()
@@ -187,7 +189,10 @@ if (!this.comet.noerror)
 // if a connection problem occurs, try to reconnect each 5 seconds
 setTimeout(function(){ comet.connect() }, 5000); 
 else
-this.comet.connect();
+{
+    this.comet.connect();
+    this.comet.ack=true;
+}
 this.comet.noerror = false;
 }
 });
@@ -258,15 +263,61 @@ handleResponse: function(response)
     $('#output').html(response['output']);
 },
 
+processBuffer: function()
+{
+    this.funcrun=true;
+    while(this.buffers.length!=0)
+    {
+        if(this.ack==true)
+        {
+            this.ack=false;
+            var that=this;
+            console.log(this.buffers);
+            //setTimeout(function(){ new Ajax.Request(that.url,that.buffers.shift());    }, 1000);
+            new Ajax.Request(that.url,that.buffers.shift());
+        }
+        else
+        {
+            var that=this;
+            setTimeout(function(){ that.processBuffer();    }, 100);
+            break;
+        }
+    }
+    this.funcrun=false;
+},
+
 doRequest: function(request,content)
 {
-    new Ajax.Request(this.url, {
-method: 'get',
-parameters: { 'login' : login ,'msg' : request ,'content': content}
-});
+    console.log("1 "+this.ack);
+    /*this.buffers.push({method: 'get',
+    parameters: { 'login' : login ,'msg' : request ,'content': content}
+    });
+    console.log(this.buffers);
+    new Ajax.Request(this.url,this.buffers.pop());*/
+    this.buffers.push({method: 'get',
+                parameters: { 'login' : login ,'msg' : request ,'content': content}
+                });
+    if(!this.funcrun)
+    {
+        this.processBuffer();            
+    }
+    /*if(!this.ack)
+    {
+        //wait(1000);
+        //setTimeout(function(){ comet.doRequest(request,content) }, 2000);
+        this.buffers.push({method: 'get',
+            parameters: { 'login' : login ,'msg' : request ,'content': content}
+            });
+            console.log(this.buffers);
+    }
+    else
+    {
+        
+    }*/
 }
 }
 var comet = new Comet();
+console.log(this.comet.buffers);
 comet.connect();
 </script><!--script src="../build/src-noconflict/ext-language_tools.js" type="text/javascript" charset="utf-8"></script-->
 <script>    	
