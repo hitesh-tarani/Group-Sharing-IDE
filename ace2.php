@@ -83,27 +83,26 @@ else
 		}
 		#Filename{
 			position:relative;
-			top:-30px;
+			top:-25px;
 			left:72px;
-		}
-		#Load{
-			position:relative;
-			top: 40px;
 		}
 		#Compile_Run{
 			position: relative;
 			top: 20px;
 		}
+		#Load{
+			position:relative;
+			top: 50px;
+		}
 		#user_files_select{
 			position: relative;
-			top: -176px;
+			top: -166px;
 			left: 102px;
 		}
 		#Save{
 			position: relative;
-			top: 27px;
+			top: 32px;
 		}
-
 		#output{
 			position:relative;
 			top: -80px;
@@ -111,12 +110,12 @@ else
 		}
 		#Share{
 			position:relative;
-			top:52px;
+			top:67px;
 			left:-285px;
 		}
 		#Share_user{
 			position:relative;
-			top:23px;
+			top:38px;
 			left:-212px;
 		}
 		#custom_input{
@@ -153,7 +152,7 @@ else
 						"<div id='editor'></div>"+
 						"</div>"+
 						"<div id='Compile_Run'><button type='button'>Compile,Run</button></div>"+
-						"<div id='Save'><button <?php if($loginid=='anonymous') echo 'disabled'; ?> type='button'>Saveas</button></div>"+
+						"<div id='Save'><button <?php if($loginid=='anonymous') echo 'disabled'; ?> type='button'>Save File</button></div>"+
 						"<div id='Load'><button <?php if($loginid=='anonymous') echo 'disabled'; ?> type='button'>Load File</button></div>"+
 						"<div class='col-md-3'><input <?php if($loginid=='anonymous') echo 'disabled'; ?> id='Filename' type='text' class='form-control' placeholder='Enter_File_Name'></div>"+
 						"<div id='Share'><button <?php if($loginid=='anonymous') echo 'disabled'; ?> type='button'>Share File</button></div>"+
